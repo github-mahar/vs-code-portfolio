@@ -2,7 +2,7 @@ import React from 'react';
 import { useVSCode } from '../context/VSCodeContext';
 
 export const MenuBar: React.FC = () => {
-  const { toggleTerminal, toggleSidebar, openTab, files } = useVSCode();
+  const { toggleTerminal, toggleSidebar, openTab, files, toggleFullscreenSlideshow } = useVSCode();
 
   const handleOpenReadme = () => {
     const readme = files.find(f => f.name === 'README.md');
@@ -51,7 +51,12 @@ export const MenuBar: React.FC = () => {
 
       <div className="relative group px-2 py-0.5 hover:bg-[#3c3c3c] rounded cursor-pointer transition">
         <span>View</span>
-        <div className="hidden group-hover:block absolute left-0 top-full mt-0 w-44 bg-[#252526] border border-[#454545] shadow-xl py-1 z-50 rounded-b">
+        <div className="hidden group-hover:block absolute left-0 top-full mt-0 w-52 bg-[#252526] border border-[#454545] shadow-xl py-1 z-50 rounded-b">
+          <div onClick={() => toggleFullscreenSlideshow(true)} className="px-3 py-1 hover:bg-[#04395e] hover:text-white flex justify-between cursor-pointer">
+            <span>Fullscreen Presentation</span>
+            <span className="text-[10px] text-[#858585]">F5</span>
+          </div>
+          <div className="my-1 border-t border-[#3c3c3c]"></div>
           <div onClick={toggleSidebar} className="px-3 py-1 hover:bg-[#04395e] hover:text-white flex justify-between cursor-pointer">
             <span>Toggle Primary Side Bar</span>
             <span className="text-[10px] text-[#858585]">Ctrl+B</span>

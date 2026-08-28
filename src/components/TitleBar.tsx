@@ -2,7 +2,7 @@ import React from 'react';
 import { useVSCode } from '../context/VSCodeContext';
 
 export const TitleBar: React.FC = () => {
-  const { activeFile, toggleSidebar } = useVSCode();
+  const { activeFile, toggleSidebar, toggleFullscreenSlideshow } = useVSCode();
 
   return (
     <div className="h-8 bg-[#1e1e1e] border-b border-[#3c3c3c] flex items-center justify-between px-3 text-xs text-[#cccccc] select-none shrink-0">
@@ -33,8 +33,17 @@ export const TitleBar: React.FC = () => {
         {activeFile ? `${activeFile.name} — gm-portfolio — Visual Studio Code` : 'gm-portfolio — Visual Studio Code'}
       </div>
 
-      {/* Right: Window Action Icons / Quick Search Hint */}
-      <div className="flex items-center justify-end space-x-3 w-1/4">
+      {/* Right: Window Action Icons / Quick Search Hint / Fullscreen Slideshow */}
+      <div className="flex items-center justify-end space-x-2 sm:space-x-3 w-1/4">
+        <button
+          onClick={() => toggleFullscreenSlideshow(true)}
+          className="flex items-center gap-1 bg-[#007acc]/20 hover:bg-[#007acc] text-[#007acc] hover:text-white border border-[#007acc]/40 px-2 py-0.5 rounded text-[10px] font-mono transition shadow-sm"
+          title="Launch Fullscreen Presentation Mode (F5)"
+        >
+          <i className="codicon codicon-screen-full text-xs"></i>
+          <span className="hidden sm:inline">Presentation</span>
+        </button>
+
         <div className="hidden lg:flex items-center bg-[#252526] border border-[#3c3c3c] px-2 py-0.5 rounded text-[10px] text-[#858585] space-x-1">
           <i className="codicon codicon-search text-xs"></i>
           <span>gm-portfolio</span>

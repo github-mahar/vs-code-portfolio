@@ -117,7 +117,18 @@ export const TabBar: React.FC = () => {
       </div>
 
       {/* Tab bar right controls */}
-      <div className="flex items-center px-2 space-x-1 text-[#858585]">
+      <div className="flex items-center px-2 space-x-2 text-[#858585] shrink-0 border-l border-[#3c3c3c]/40 h-full">
+        {activeFile && (activeFile.type === 'markdown' || activeFile.name === 'projects.tsx' || activeFile.name === 'experience.ts') && (
+          <button
+            onClick={() => toggleMarkdownViewMode(activeFile.name)}
+            className="flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono bg-[#007acc]/20 hover:bg-[#007acc] text-[#007acc] hover:text-white border border-[#007acc]/40 rounded transition shadow-sm"
+            title={activeViewMode[activeFile.name] === 'preview' ? "Switch to Source Code" : "Switch to Rendered Preview"}
+          >
+            <i className={`codicon ${activeViewMode[activeFile.name] === 'preview' ? 'codicon-code' : 'codicon-book'} text-xs`}></i>
+            <span>{activeViewMode[activeFile.name] === 'preview' ? 'View Code' : 'Preview'}</span>
+          </button>
+        )}
+
         <button 
           onClick={closeAllTabs} 
           className="p-1 hover:text-white hover:bg-[#3c3c3c] rounded" 

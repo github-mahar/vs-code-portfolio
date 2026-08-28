@@ -20,6 +20,7 @@ interface VSCodeContextType {
   activeViewMode: Record<string, 'code' | 'preview'>;
   unsavedFiles: Record<string, boolean>;
   toasts: ToastNotification[];
+  isFullscreenSlideshowOpen: boolean;
   
   openTab: (file: FileItem | string) => void;
   closeTab: (fileId: string) => void;
@@ -34,6 +35,7 @@ interface VSCodeContextType {
   addToast: (message: string, type?: 'info' | 'success' | 'warning' | 'error', source?: string) => void;
   removeToast: (id: string) => void;
   markFileSaved: (filePath: string) => void;
+  toggleFullscreenSlideshow: (enable?: boolean) => void;
 }
 
 const VSCodeContext = createContext<VSCodeContextType | undefined>(undefined);
@@ -49,11 +51,10 @@ export const VSCodeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [activePanel, setActivePanel] = useState<ActivityPanel>('explorer');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [isTerminalOpen, setIsTerminalOpen] = useState<boolean>(true);
+  const [isFullscreenSlideshowOpen, setIsFullscreenSlideshowOpen] = useState<boolean>(false);
   
-  // README.md is in preview mode by default
-  const [activeViewMode, setActiveViewMode] = useState<Record<string, 'code' | 'preview'>>({
-    'README.md': 'preview'
-  });
+  // All files default to View Code mode ('code')
+  const [activeViewMode, setActiveViewMode] = useState<Record<string, 'code' | 'preview'>>({});
   
   // contact.json starts as unsaved
   const [unsavedFiles, setUnsavedFiles] = useState<Record<string, boolean>>({
@@ -61,6 +62,56 @@ export const VSCodeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   });
 
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
+
+  // Sync fullscreen state with document.fullscreenElement
+  React.useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreenSlideshowOpen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  // Auto-enter presentation mode on initial gesture on reload
+  React.useEffect(() => {
+    let triggered = false;
+
+    const handleInitialGesture = () => {
+      if (triggered) return;
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.().then(() => {
+          triggered = true;
+        }).catch((err) => {
+          console.warn("Fullscreen request on gesture:", err);
+        });
+      } else {
+        triggered = true;
+      }
+    };
+
+    const events = ['click', 'pointerdown', 'keydown', 'touchstart'];
+    events.forEach(event => window.addEventListener(event, handleInitialGesture, { once: false }));
+
+    return () => {
+      events.forEach(event => window.removeEventListener(event, handleInitialGesture));
+    };
+  }, []);
+
+  const toggleFullscreenSlideshow = (enable?: boolean) => {
+    const shouldEnable = typeof enable === 'boolean' ? enable : !document.fullscreenElement;
+    if (shouldEnable) {
+      document.documentElement.requestFullscreen?.().catch((err) => {
+        console.warn("Fullscreen request error:", err);
+      });
+    } else {
+      if (document.fullscreenElement) {
+        document.exitFullscreen?.().catch((err) => {
+          console.warn("Exit fullscreen error:", err);
+        });
+      }
+    }
+  };
 
   const addToast = (message: string, type: 'info' | 'success' | 'warning' | 'error' = 'info', source: string = 'VS Code System') => {
     const id = Date.now().toString();
@@ -158,6 +209,7 @@ export const VSCodeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         activeViewMode,
         unsavedFiles,
         toasts,
+        isFullscreenSlideshowOpen,
         openTab,
         closeTab,
         closeAllTabs,
@@ -170,7 +222,8 @@ export const VSCodeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         updateFileContent,
         addToast,
         removeToast,
-        markFileSaved
+        markFileSaved,
+        toggleFullscreenSlideshow
       }}
     >
       {children}

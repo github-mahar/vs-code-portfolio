@@ -29,8 +29,10 @@ const MainLayout: React.FC = () => {
     isSidebarOpen, 
     isTerminalOpen, 
     activeViewMode,
+    isFullscreenSlideshowOpen,
     toggleSidebar,
     toggleTerminal,
+    toggleFullscreenSlideshow,
     openTab,
     closeTab,
     setActivePanel,
@@ -44,6 +46,13 @@ const MainLayout: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
+
+      // Fullscreen Slideshow Mode (F5)
+      if (e.key === 'F5' || (e.ctrlKey && key === 'f5')) {
+        e.preventDefault();
+        toggleFullscreenSlideshow();
+        return;
+      }
 
       // Open README.md (Ctrl+Alt+R or Ctrl+O)
       if ((e.ctrlKey || e.metaKey) && ((e.altKey && key === 'r') || (!e.altKey && !e.shiftKey && key === 'o'))) {
@@ -119,7 +128,7 @@ const MainLayout: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [toggleSidebar, toggleTerminal, setActivePanel, isSidebarOpen, files, openTab, activeFile, closeTab]);
+  }, [toggleSidebar, toggleTerminal, toggleFullscreenSlideshow, setActivePanel, isSidebarOpen, files, openTab, activeFile, closeTab]);
 
   // Terminal resizing handler
   const handleMouseDown = () => setIsResizing(true);
@@ -250,6 +259,17 @@ const MainLayout: React.FC = () => {
 
       {/* 5. Status Bar Strip */}
       <StatusBar />
+
+      {/* Floating Presentation Launch Prompt */}
+      {!isFullscreenSlideshowOpen && (
+        <div 
+          onClick={() => toggleFullscreenSlideshow(true)}
+          className="fixed top-10 left-1/2 -translate-x-1/2 z-40 bg-[#007acc] hover:bg-[#005999] text-white px-4 py-2 rounded-full shadow-2xl flex items-center gap-2 cursor-pointer transition transform hover:scale-105 border border-white/20 font-mono text-xs animate-bounce select-none"
+        >
+          <i className="codicon codicon-screen-full text-sm"></i>
+          <span className="font-bold">Click Anywhere to Enter Presentation Mode (F5)</span>
+        </div>
+      )}
 
       {/* Floating Notifications */}
       <ToastContainer />
