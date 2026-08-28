@@ -17,7 +17,7 @@ export const TitleBar: React.FC = () => {
   return (
     <div className="h-8 bg-[#1e1e1e] border-b border-[#3c3c3c] flex items-center justify-between px-3 text-xs text-[#cccccc] select-none shrink-0">
       {/* Left: Window Controls / Sidebar toggle */}
-      <div className="flex items-center space-x-2 w-1/4">
+      <div className="flex items-center space-x-2 shrink-0">
         {/* macOS style traffic light dots */}
         <div className="flex items-center space-x-1.5 mr-2 group/dots">
           <button
@@ -57,24 +57,24 @@ export const TitleBar: React.FC = () => {
       </div>
 
       {/* Center: Title */}
-      <div className="flex-1 text-center font-medium truncate text-[#cccccc]/90 text-[11px] md:text-xs">
+      <div className="flex-1 text-center font-medium truncate text-[#cccccc]/90 text-[11px] md:text-xs px-2">
         {activeFile ? `${activeFile.name} — gm-portfolio — Visual Studio Code` : 'gm-portfolio — Visual Studio Code'}
       </div>
 
       {/* Right: Window Action Icons / Quick Search Hint / Fullscreen Slideshow */}
-      <div className="flex items-center justify-end space-x-2 sm:space-x-3 w-1/4">
+      <div className="flex items-center justify-end space-x-2 sm:space-x-3 shrink-0">
         <button
           onClick={() => toggleFullscreenSlideshow()}
-          className="flex items-center gap-1 bg-[#007acc]/20 hover:bg-[#007acc] text-[#007acc] hover:text-white border border-[#007acc]/40 px-2 py-0.5 rounded text-[10px] font-mono transition shadow-sm"
+          className="flex items-center gap-1 bg-[#007acc]/20 hover:bg-[#007acc] text-[#007acc] hover:text-white border border-[#007acc]/40 px-2 py-0.5 rounded text-[10px] font-mono transition shadow-sm whitespace-nowrap"
           title={isFullscreenSlideshowOpen ? "Exit Presentation View (F5)" : "Launch Fullscreen Presentation Mode (F5)"}
         >
           <i className={`codicon ${isFullscreenSlideshowOpen ? 'codicon-screen-normal' : 'codicon-screen-full'} text-xs`}></i>
           <span className="hidden sm:inline">{isFullscreenSlideshowOpen ? 'Exit Presentation' : 'Presentation'}</span>
         </button>
 
-        <div className="hidden lg:flex items-center bg-[#252526] border border-[#3c3c3c] px-2 py-0.5 rounded text-[10px] text-[#858585] space-x-1">
+        <div className="hidden lg:flex items-center bg-[#252526] border border-[#3c3c3c] px-2.5 py-0.5 rounded text-[10px] text-[#858585] space-x-1.5 whitespace-nowrap shrink-0">
           <i className="codicon codicon-search text-xs"></i>
-          <span>gm-portfolio</span>
+          <span className="whitespace-nowrap">gm-portfolio</span>
           <span className="bg-[#333333] px-1 rounded text-[#cccccc]">Ctrl+P</span>
         </div>
         <div className="flex items-center space-x-1 text-[#cccccc]/70">
