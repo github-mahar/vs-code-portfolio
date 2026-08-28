@@ -13,7 +13,7 @@ import { CodeEditor } from './components/EditorPane/CodeEditor';
 import { MarkdownPreview } from './components/EditorPane/MarkdownPreview';
 import { ProjectsPreview } from './components/EditorPane/ProjectsPreview';
 import { ExperiencePreview } from './components/EditorPane/ExperiencePreview';
-import { ContactFormEditor } from './components/EditorPane/ContactFormEditor';
+import { JsonPreview } from './components/EditorPane/JsonPreview';
 import { EmptyState } from './components/EditorPane/EmptyState';
 import { Minimap } from './components/EditorPane/Minimap';
 import { TerminalPanel } from './components/Terminal/TerminalPanel';
@@ -36,6 +36,7 @@ const MainLayout: React.FC = () => {
     openTab,
     closeTab,
     setActivePanel,
+    toggleMarkdownViewMode,
     files
   } = useVSCode();
 
@@ -51,6 +52,18 @@ const MainLayout: React.FC = () => {
       if (e.key === 'F5' || (e.ctrlKey && key === 'f5')) {
         e.preventDefault();
         toggleFullscreenSlideshow();
+        return;
+      }
+
+      // Toggle Preview / View Code Mode (Ctrl+Shift+V)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'v') {
+        if (activeFile) {
+          const isPreviewable = activeFile.type === 'markdown' || activeFile.type === 'json' || activeFile.name.endsWith('.json') || activeFile.name === 'projects.tsx' || activeFile.name === 'experience.ts';
+          if (isPreviewable) {
+            e.preventDefault();
+            toggleMarkdownViewMode(activeFile.name);
+          }
+        }
         return;
       }
 
@@ -128,7 +141,7 @@ const MainLayout: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [toggleSidebar, toggleTerminal, toggleFullscreenSlideshow, setActivePanel, isSidebarOpen, files, openTab, activeFile, closeTab]);
+  }, [toggleSidebar, toggleTerminal, toggleFullscreenSlideshow, setActivePanel, isSidebarOpen, files, openTab, activeFile, closeTab, toggleMarkdownViewMode]);
 
   // Terminal resizing handler
   const handleMouseDown = () => setIsResizing(true);
@@ -175,11 +188,12 @@ const MainLayout: React.FC = () => {
       return <EmptyState />;
     }
 
-    if (activeFile.name === 'contact.json') {
-      return <ContactFormEditor />;
-    }
+    const isPreviewable = activeFile.type === 'markdown' || activeFile.type === 'json' || activeFile.name.endsWith('.json') || activeFile.name === 'projects.tsx' || activeFile.name === 'experience.ts';
+    const isPreview = isPreviewable && activeViewMode[activeFile.name] !== 'code';
 
-    const isPreview = activeViewMode[activeFile.name] === 'preview';
+    if ((activeFile.type === 'json' || activeFile.name.endsWith('.json')) && isPreview) {
+      return <JsonPreview file={activeFile} />;
+    }
 
     if (activeFile.name === 'projects.tsx' && isPreview) {
       return <ProjectsPreview />;
@@ -234,7 +248,7 @@ const MainLayout: React.FC = () => {
             {renderEditorBody()}
 
             {/* Code Minimap (Only shown when active code file is rendered) */}
-            {activeFile && openTabs.length > 0 && activeFile.name !== 'contact.json' && activeViewMode[activeFile.name] !== 'preview' && (
+            {activeFile && openTabs.length > 0 && activeViewMode[activeFile.name] !== 'preview' && (
               <Minimap content={activeFile.content} />
             )}
           </div>

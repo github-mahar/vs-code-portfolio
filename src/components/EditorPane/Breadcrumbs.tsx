@@ -7,8 +7,8 @@ export const Breadcrumbs: React.FC = () => {
   if (!activeFile) return null;
 
   const parts = activeFile.path.split('/');
-  const isPreviewable = activeFile.type === 'markdown' || activeFile.name === 'projects.tsx' || activeFile.name === 'experience.ts';
-  const isPreviewing = activeViewMode[activeFile.name] === 'preview';
+  const isPreviewable = activeFile.type === 'markdown' || activeFile.type === 'json' || activeFile.name.endsWith('.json') || activeFile.name === 'projects.tsx' || activeFile.name === 'experience.ts';
+  const isPreviewing = activeViewMode[activeFile.name] !== 'code';
 
   return (
     <div className="h-8 bg-[#1e1e1e] border-b border-[#2d2d2d] flex items-center justify-between px-4 text-[11px] text-[#858585] select-none font-mono shrink-0">
