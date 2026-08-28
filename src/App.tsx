@@ -32,31 +32,94 @@ const MainLayout: React.FC = () => {
     toggleSidebar,
     toggleTerminal,
     openTab,
+    closeTab,
+    setActivePanel,
     files
   } = useVSCode();
 
   const [terminalHeight, setTerminalHeight] = useState<number>(200);
   const [isResizing, setIsResizing] = useState<boolean>(false);
 
-  // Global Keyboard Shortcuts (Ctrl+B, Ctrl+`, Ctrl+P)
+  // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
-        e.preventDefault();
-        toggleSidebar();
-      } else if ((e.ctrlKey || e.metaKey) && e.key === '`') {
-        e.preventDefault();
-        toggleTerminal();
-      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+      const key = e.key.toLowerCase();
+
+      // Open README.md (Ctrl+Alt+R or Ctrl+O)
+      if ((e.ctrlKey || e.metaKey) && ((e.altKey && key === 'r') || (!e.altKey && !e.shiftKey && key === 'o'))) {
         e.preventDefault();
         const readme = files.find(f => f.name === 'README.md');
         if (readme) openTab(readme);
+        return;
+      }
+
+      // Open contact.json (Ctrl+Alt+C or Ctrl+Shift+C)
+      if ((e.ctrlKey || e.metaKey) && ((e.altKey && key === 'c') || (e.shiftKey && key === 'c'))) {
+        e.preventDefault();
+        const contact = files.find(f => f.name === 'contact.json');
+        if (contact) openTab(contact);
+        return;
+      }
+
+      // Quick File Search / Search Panel (Ctrl+P or Ctrl+Shift+F)
+      if ((e.ctrlKey || e.metaKey) && (!e.altKey && (key === 'p' || (e.shiftKey && key === 'f')))) {
+        e.preventDefault();
+        setActivePanel('search');
+        if (!isSidebarOpen) toggleSidebar();
+        return;
+      }
+
+      // Toggle Terminal (Ctrl+` or Ctrl+Shift+`)
+      if ((e.ctrlKey || e.metaKey) && (e.key === '`' || e.key === '~' || e.code === 'Backquote')) {
+        e.preventDefault();
+        toggleTerminal();
+        return;
+      }
+
+      // Toggle Sidebar (Ctrl+B)
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && key === 'b') {
+        e.preventDefault();
+        toggleSidebar();
+        return;
+      }
+
+      // Explorer Panel (Ctrl+Shift+E)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && !e.altKey && key === 'e') {
+        e.preventDefault();
+        setActivePanel('explorer');
+        if (!isSidebarOpen) toggleSidebar();
+        return;
+      }
+
+      // Source Control Panel (Ctrl+Shift+G)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && !e.altKey && key === 'g') {
+        e.preventDefault();
+        setActivePanel('git');
+        if (!isSidebarOpen) toggleSidebar();
+        return;
+      }
+
+      // Extensions Panel (Ctrl+Shift+X)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && !e.altKey && key === 'x') {
+        e.preventDefault();
+        setActivePanel('extensions');
+        if (!isSidebarOpen) toggleSidebar();
+        return;
+      }
+
+      // Close Active Tab (Ctrl+W)
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && key === 'w') {
+        if (activeFile) {
+          e.preventDefault();
+          closeTab(activeFile.id);
+        }
+        return;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [toggleSidebar, toggleTerminal, files, openTab]);
+  }, [toggleSidebar, toggleTerminal, setActivePanel, isSidebarOpen, files, openTab, activeFile, closeTab]);
 
   // Terminal resizing handler
   const handleMouseDown = () => setIsResizing(true);

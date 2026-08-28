@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useVSCode } from '../../context/VSCodeContext';
 
 export const SearchPanel: React.FC = () => {
   const { files, openTab } = useVSCode();
   const [searchTerm, setSearchTerm] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const searchResults = searchTerm.trim() === '' 
     ? [] 
@@ -20,6 +25,7 @@ export const SearchPanel: React.FC = () => {
 
       <div className="relative mb-3">
         <input
+          ref={inputRef}
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

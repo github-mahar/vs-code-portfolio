@@ -21,11 +21,11 @@ export const MenuBar: React.FC = () => {
         <div className="hidden group-hover:block absolute left-0 top-full mt-0 w-48 bg-[#252526] border border-[#454545] shadow-xl py-1 z-50 rounded-b">
           <div onClick={handleOpenReadme} className="px-3 py-1 hover:bg-[#04395e] hover:text-white flex justify-between cursor-pointer">
             <span>Open README.md</span>
-            <span className="text-[10px] text-[#858585]">Ctrl+O</span>
+            <span className="text-[10px] text-[#858585]">Ctrl+Alt+R</span>
           </div>
           <div onClick={handleOpenContact} className="px-3 py-1 hover:bg-[#04395e] hover:text-white flex justify-between cursor-pointer">
             <span>Contact Form</span>
-            <span className="text-[10px] text-[#858585]">Ctrl+Shift+C</span>
+            <span className="text-[10px] text-[#858585]">Ctrl+Alt+C</span>
           </div>
           <div className="my-1 border-t border-[#3c3c3c]"></div>
           <div className="px-3 py-1 text-[#858585] flex justify-between">

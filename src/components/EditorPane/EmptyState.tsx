@@ -2,7 +2,7 @@ import React from 'react';
 import { useVSCode } from '../../context/VSCodeContext';
 
 export const EmptyState: React.FC = () => {
-  const { files, openTab } = useVSCode();
+  const { files, openTab, setActivePanel, isSidebarOpen, toggleSidebar, toggleTerminal } = useVSCode();
 
   const handleOpenReadme = () => {
     const readme = files.find(f => f.name === 'README.md');
@@ -12,6 +12,11 @@ export const EmptyState: React.FC = () => {
   const handleOpenContact = () => {
     const contact = files.find(f => f.name === 'contact.json');
     if (contact) openTab(contact);
+  };
+
+  const handleOpenSearch = () => {
+    setActivePanel('search');
+    if (!isSidebarOpen) toggleSidebar();
   };
 
   return (
@@ -53,20 +58,20 @@ export const EmptyState: React.FC = () => {
             </kbd>
           </div>
 
-          <div className="flex justify-between items-center text-[#858585]">
+          <div onClick={handleOpenSearch} className="flex justify-between items-center cursor-pointer hover:text-[#569cd6] group">
             <span className="flex items-center gap-2">
-              <i className="codicon codicon-search"></i> Quick File Search
+              <i className="codicon codicon-search text-[#9cdcfe]"></i> Quick File Search
             </span>
-            <kbd className="bg-[#333333] text-[#cccccc] px-2 py-0.5 rounded text-[10px] font-mono">
+            <kbd className="bg-[#333333] text-[#cccccc] px-2 py-0.5 rounded text-[10px] font-mono group-hover:bg-[#007acc] group-hover:text-white">
               Ctrl+P
             </kbd>
           </div>
 
-          <div className="flex justify-between items-center text-[#858585]">
+          <div onClick={toggleTerminal} className="flex justify-between items-center cursor-pointer hover:text-[#569cd6] group">
             <span className="flex items-center gap-2">
-              <i className="codicon codicon-terminal"></i> Toggle Terminal
+              <i className="codicon codicon-terminal text-[#4ec9b0]"></i> Toggle Terminal
             </span>
-            <kbd className="bg-[#333333] text-[#cccccc] px-2 py-0.5 rounded text-[10px] font-mono">
+            <kbd className="bg-[#333333] text-[#cccccc] px-2 py-0.5 rounded text-[10px] font-mono group-hover:bg-[#007acc] group-hover:text-white">
               Ctrl+`
             </kbd>
           </div>
