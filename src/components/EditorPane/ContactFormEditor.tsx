@@ -26,25 +26,37 @@ export const ContactFormEditor: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Send form data to Formspree endpoint
-      await fetch('https://formspree.io/f/xbjnqpyz', {
+      // Send form data to Web3Forms endpoint
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(formData)
-      }).catch(() => null);
+        body: JSON.stringify({
+          access_key: '7d3ae0c2-5c4c-43c4-9fe5-ffe766c1839a',
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject || 'Project Inquiry / Hire Request',
+          message: formData.message
+        })
+      });
 
-      setIsSubmitting(false);
-      setSubmitted(true);
-      markFileSaved('contact.json');
+      const result = await response.json();
 
-      addToast(
-        `Message successfully sent to ${PORTFOLIO_DATA.email}! Mahar Ghulam Muhammad will respond shortly.`,
-        'success',
-        'Contact Form'
-      );
+      if (result.success) {
+        setIsSubmitting(false);
+        setSubmitted(true);
+        markFileSaved('contact.json');
+
+        addToast(
+          `Message successfully sent to ${PORTFOLIO_DATA.email}! Mahar Ghulam Muhammad will respond shortly.`,
+          'success',
+          'Contact Form'
+        );
+      } else {
+        throw new Error(result.message || 'Submission failed');
+      }
     } catch (err) {
       setIsSubmitting(false);
       markFileSaved('contact.json');
@@ -165,7 +177,7 @@ export const ContactFormEditor: React.FC = () => {
             {/* Form Submit Footer */}
             <div className="pt-4 border-t border-[#3c3c3c] flex items-center justify-between font-sans">
               <div className="text-[11px] text-[#858585] flex items-center gap-1">
-                <i className="codicon codicon-lock text-xs"></i> Formspree Secure Endpoint
+                <i className="codicon codicon-lock text-xs"></i> Web3Forms Encrypted Endpoint
               </div>
               <button
                 type="submit"
