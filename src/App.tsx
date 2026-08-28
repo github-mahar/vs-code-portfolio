@@ -20,6 +20,7 @@ import { TerminalPanel } from './components/Terminal/TerminalPanel';
 import { StatusBar } from './components/StatusBar';
 import { ToastContainer } from './components/ToastContainer';
 import { MobileWarning } from './components/MobileWarning';
+import { FullscreenSlideshow } from './components/EditorPane/FullscreenSlideshow';
 
 const MainLayout: React.FC = () => {
   const { 
@@ -287,6 +288,9 @@ const MainLayout: React.FC = () => {
 
       {/* Floating Notifications */}
       <ToastContainer />
+
+      {/* Fullscreen Interactive Presentation Mode */}
+      {isFullscreenSlideshowOpen && <FullscreenSlideshow />}
     </div>
   );
 };

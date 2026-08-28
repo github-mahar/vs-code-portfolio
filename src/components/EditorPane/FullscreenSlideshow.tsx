@@ -98,8 +98,33 @@ export const FullscreenSlideshow: React.FC = () => {
   return (
     <div className="fixed inset-0 z-50 bg-[#121212] text-[#cccccc] flex flex-col font-sans select-none overflow-hidden">
       {/* Top Fullscreen Header Toolbar */}
-      <div className="h-14 bg-[#1e1e1e] border-b border-[#3c3c3c] px-6 flex items-center justify-between shrink-0 shadow-md">
+      <div className="h-14 bg-[#1e1e1e] border-b border-[#3c3c3c] px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-md">
         <div className="flex items-center gap-3">
+          {/* macOS style traffic light dots */}
+          <div className="flex items-center space-x-1.5 mr-2 group/dots">
+            <button
+              onClick={handleClose}
+              className="w-3 h-3 rounded-full bg-[#ff5f56] hover:bg-[#ff3b30] flex items-center justify-center text-[8px] text-black/80 font-bold opacity-90 hover:opacity-100 transition shadow-sm"
+              title="Exit Presentation View (ESC)"
+            >
+              <span className="opacity-0 group-hover/dots:opacity-100 transition-opacity">×</span>
+            </button>
+            <button
+              onClick={handleClose}
+              className="w-3 h-3 rounded-full bg-[#ffbd2e] hover:bg-[#ffcc00] flex items-center justify-center text-[8px] text-black/80 font-bold opacity-90 hover:opacity-100 transition shadow-sm"
+              title="Exit Presentation View"
+            >
+              <span className="opacity-0 group-hover/dots:opacity-100 transition-opacity">−</span>
+            </button>
+            <button
+              onClick={handleClose}
+              className="w-3 h-3 rounded-full bg-[#27c93f] hover:bg-[#34c759] flex items-center justify-center text-[8px] text-black/80 font-bold opacity-90 hover:opacity-100 transition shadow-sm"
+              title="Exit Presentation View (F5)"
+            >
+              <span className="opacity-0 group-hover/dots:opacity-100 transition-opacity">⤢</span>
+            </button>
+          </div>
+
           <div className="w-8 h-8 rounded-lg bg-[#007acc] text-white font-bold flex items-center justify-center text-sm shadow">
             GM
           </div>
@@ -113,7 +138,7 @@ export const FullscreenSlideshow: React.FC = () => {
           </div>
         </div>
 
-        {/* Action Controls */}
+        {/* Action Controls & Windows Controls */}
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsAutoPlay(prev => !prev)}
@@ -135,6 +160,25 @@ export const FullscreenSlideshow: React.FC = () => {
           >
             <i className="codicon codicon-chrome-close"></i> Exit Fullscreen (ESC)
           </button>
+
+          {/* Windows Window Controls */}
+          <div className="hidden sm:flex items-center space-x-1 text-[#cccccc]/70 border-l border-[#3c3c3c] pl-3">
+            <i 
+              className="codicon codicon-chrome-minimize hover:text-white cursor-pointer p-1 rounded hover:bg-[#333333]" 
+              onClick={handleClose}
+              title="Exit Presentation View"
+            ></i>
+            <i 
+              className="codicon codicon-chrome-restore hover:text-white cursor-pointer p-1 rounded hover:bg-[#333333]" 
+              onClick={handleClose}
+              title="Exit Presentation View"
+            ></i>
+            <i 
+              className="codicon codicon-chrome-close hover:text-red-400 cursor-pointer p-1 rounded hover:bg-[#c42b1c] hover:text-white transition-colors" 
+              onClick={handleClose}
+              title="Exit Presentation View"
+            ></i>
+          </div>
         </div>
       </div>
 

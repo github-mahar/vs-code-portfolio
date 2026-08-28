@@ -108,7 +108,8 @@ export const VSCodeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, []);
 
   const toggleFullscreenSlideshow = (enable?: boolean) => {
-    const shouldEnable = typeof enable === 'boolean' ? enable : !document.fullscreenElement;
+    const shouldEnable = typeof enable === 'boolean' ? enable : !isFullscreenSlideshowOpen;
+    setIsFullscreenSlideshowOpen(shouldEnable);
     if (shouldEnable) {
       document.documentElement.requestFullscreen?.().catch((err) => {
         console.warn("Fullscreen request error:", err);
