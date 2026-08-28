@@ -53,7 +53,7 @@ export const StatusBar: React.FC = () => {
           rel="noreferrer"
           className="flex items-center space-x-1 hover:bg-[#005999] px-1.5 py-0.5 rounded transition font-bold"
         >
-          <span>ezzcode.online</span>
+          <span>vs-code-portfolio.ezzcode.online</span>
           <i className="codicon codicon-globe text-xs"></i>
         </a>
 

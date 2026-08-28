@@ -6,7 +6,7 @@ export const PORTFOLIO_DATA = {
   phone: "+92 349 4607275",
   github: "https://github.com/github-mahar",
   linkedin: "https://linkedin.com",
-  website: "https://my-portfolio.ezzcode.online",
+  website: "https://vs-code-portfolio.ezzcode.online/",
   
   bio: `React front-end developer with production experience building and maintaining live, revenue-generating web applications and e-commerce storefronts. Works daily in React.js, TypeScript, and Vite, with hands-on experience integrating REST APIs, payment gateways, and third-party services into client-facing products. Shipped a 35+ section component-based front-end product from scratch and currently owns front-end architecture and integration work for a live client platform. Comfortable owning a feature from component design through deployment, and drawn to agency-style work where design and engineering meet.`,
   
@@ -94,7 +94,7 @@ export const PORTFOLIO_DATA = {
       tagline: "Custom Shopify 2.0 Theme",
       tech: ["Shopify Liquid", "JavaScript", "CSS"],
       description: "A premium, fully custom Shopify 2.0 theme built and sold through EzzCode, focused on performance and flexible section-based customization.",
-      liveUrl: "https://my-portfolio.ezzcode.online",
+      liveUrl: "https://vs-code-portfolio.ezzcode.online/",
       githubUrl: "https://github.com/github-mahar"
     },
     {
@@ -103,7 +103,7 @@ export const PORTFOLIO_DATA = {
       tagline: "AI Upwork Proposal Generator",
       tech: ["Next.js", "Supabase", "Gemini API"],
       description: "SaaS platform helping freelancers craft personalized, high-converting Upwork proposals in seconds based on job descriptions and developer skill profiles.",
-      liveUrl: "https://my-portfolio.ezzcode.online",
+      liveUrl: "https://vs-code-portfolio.ezzcode.online/",
       githubUrl: "https://github.com/github-mahar"
     },
     {
@@ -112,7 +112,7 @@ export const PORTFOLIO_DATA = {
       tagline: "This Website",
       tech: ["React", "TypeScript", "Vite", "Tailwind CSS"],
       description: "A pixel-accurate, fully interactive VS Code UI clone built as a personal developer portfolio, complete with a working file tree, tabs, and terminal.",
-      liveUrl: "https://my-portfolio.ezzcode.online",
+      liveUrl: "https://vs-code-portfolio.ezzcode.online/",
       githubUrl: "https://github.com/github-mahar"
     }
   ],
