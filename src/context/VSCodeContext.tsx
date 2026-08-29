@@ -53,16 +53,16 @@ export const VSCodeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isTerminalOpen, setIsTerminalOpen] = useState<boolean>(true);
   const [isFullscreenSlideshowOpen, setIsFullscreenSlideshowOpen] = useState<boolean>(false);
   
-  // Default preview mode for previewable files (JSON, Markdown, Projects, Experience)
+  // Default view mode: only contact.json defaults to 'preview' (preview mode), all other files default to 'code' (viewcode mode)
   const [activeViewMode, setActiveViewMode] = useState<Record<string, 'code' | 'preview'>>({
     'contact.json': 'preview',
-    'skills.json': 'preview',
-    'settings.json': 'preview',
-    'README.md': 'preview',
-    'about.md': 'preview',
-    'certifications.md': 'preview',
-    'projects.tsx': 'preview',
-    'experience.ts': 'preview',
+    'skills.json': 'code',
+    'settings.json': 'code',
+    'README.md': 'code',
+    'about.md': 'code',
+    'certifications.md': 'code',
+    'projects.tsx': 'code',
+    'experience.ts': 'code',
   });
   
   // contact.json starts as unsaved
@@ -159,12 +159,10 @@ export const VSCodeProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setOpenTabs(prev => [...prev, targetFile!]);
     }
     
-    // Default contact.json and previewable files to preview mode if not explicitly set
+    // Default contact.json to preview mode, all other files default to code mode if not explicitly set
     if (activeViewMode[targetFile.name] === undefined) {
-      const isPreviewable = targetFile.type === 'markdown' || targetFile.type === 'json' || targetFile.name.endsWith('.json') || targetFile.name === 'projects.tsx' || targetFile.name === 'experience.ts';
-      if (isPreviewable) {
-        setActiveViewMode(prev => ({ ...prev, [targetFile!.name]: 'preview' }));
-      }
+      const defaultMode = targetFile.name === 'contact.json' ? 'preview' : 'code';
+      setActiveViewMode(prev => ({ ...prev, [targetFile!.name]: defaultMode }));
     }
 
     setActiveFileState(targetFile);

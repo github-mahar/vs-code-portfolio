@@ -1,5 +1,6 @@
 import React from 'react';
 import { useVSCode } from '../../context/VSCodeContext';
+import { getFileIcon } from '../FileIcon';
 
 export const Breadcrumbs: React.FC = () => {
   const { activeFile, activeViewMode, toggleMarkdownViewMode } = useVSCode();
@@ -18,7 +19,8 @@ export const Breadcrumbs: React.FC = () => {
         {parts.map((part: string, index: number) => (
           <React.Fragment key={index}>
             <i className="codicon codicon-chevron-right text-[10px] text-[#555555] shrink-0"></i>
-            <span className={`hover:text-[#cccccc] cursor-pointer truncate ${index === parts.length - 1 ? 'text-[#cccccc] font-semibold' : ''}`}>
+            <span className={`hover:text-[#cccccc] cursor-pointer truncate flex items-center ${index === parts.length - 1 ? 'text-[#cccccc] font-semibold' : ''}`}>
+              {index === parts.length - 1 && getFileIcon(activeFile, "w-3.5 h-3.5 mr-1 inline-block shrink-0")}
               {part}
             </span>
           </React.Fragment>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useVSCode } from '../../context/VSCodeContext';
+import { getFileIcon, getFolderIcon } from '../FileIcon';
 import type { FileItem, FolderItem } from '../../types/vscode';
 
 export const FileExplorer: React.FC = () => {
@@ -18,21 +19,6 @@ export const FileExplorer: React.FC = () => {
       ...prev,
       [folderId]: !prev[folderId]
     }));
-  };
-
-  const getFileIcon = (file: FileItem) => {
-    switch (file.type) {
-      case 'markdown':
-        return <i className="codicon codicon-markdown text-[#42a5f5] text-sm mr-1.5"></i>;
-      case 'typescript':
-        return <span className="font-bold text-[10px] text-[#3178c6] mr-1.5 font-mono">TS</span>;
-      case 'tsx':
-        return <span className="font-bold text-[10px] text-[#61dafb] mr-1.5 font-mono">TSX</span>;
-      case 'json':
-        return <i className="codicon codicon-json text-[#fbc02d] text-sm mr-1.5"></i>;
-      default:
-        return <i className="codicon codicon-file text-[#cccccc] text-sm mr-1.5"></i>;
-    }
   };
 
   const renderFileRow = (file: FileItem, depth: number) => {
@@ -70,7 +56,7 @@ export const FileExplorer: React.FC = () => {
           className="flex items-center h-6 cursor-pointer text-xs text-[#cccccc]/80 hover:bg-[#2a2d2e] hover:text-white transition group"
         >
           <i className={`codicon ${isOpen ? 'codicon-chevron-down' : 'codicon-chevron-right'} text-xs mr-1 text-[#858585] group-hover:text-white`}></i>
-          <i className={`codicon ${isOpen ? 'codicon-folder-opened' : 'codicon-folder'} text-sm mr-1.5 ${folder.name === '.vscode' ? 'text-[#e5c07b]' : 'text-[#dcb67a]'}`}></i>
+          {getFolderIcon(folder.name, isOpen)}
           <span className="truncate">{folder.name}</span>
         </div>
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useVSCode } from '../../context/VSCodeContext';
-import type { FileItem } from '../../types/vscode';
+import { getFileIcon } from '../FileIcon';
+
 
 export const TabBar: React.FC = () => {
   const { openTabs, activeFile, setActiveFile, closeTab, closeAllTabs, reorderTabs, unsavedFiles, activeViewMode, toggleMarkdownViewMode } = useVSCode();
@@ -29,21 +30,6 @@ export const TabBar: React.FC = () => {
     setDraggedIndex(null);
   };
 
-  const getTabIcon = (file: FileItem) => {
-    switch (file.type) {
-      case 'markdown':
-        return <i className="codicon codicon-markdown text-[#42a5f5] text-xs mr-1.5"></i>;
-      case 'typescript':
-        return <span className="font-bold text-[9px] text-[#3178c6] mr-1.5 font-mono">TS</span>;
-      case 'tsx':
-        return <span className="font-bold text-[9px] text-[#61dafb] mr-1.5 font-mono">TSX</span>;
-      case 'json':
-        return <i className="codicon codicon-json text-[#fbc02d] text-xs mr-1.5"></i>;
-      default:
-        return <i className="codicon codicon-file text-[#cccccc] text-xs mr-1.5"></i>;
-    }
-  };
-
   return (
     <div className="h-9 bg-[#2d2d2d] flex items-center border-b border-[#3c3c3c] overflow-x-auto select-none no-scrollbar shrink-0">
       {/* Scrollable Tab List */}
@@ -68,7 +54,7 @@ export const TabBar: React.FC = () => {
                   : 'bg-[#2d2d2d] text-[#cccccc]/70 hover:bg-[#252526] hover:text-white'
               }`}
             >
-              {getTabIcon(file)}
+              {getFileIcon(file)}
 
               <span className={`truncate flex-1 font-mono text-[11px] ${isUnsaved ? 'italic font-semibold' : ''}`}>
                 {file.name}
